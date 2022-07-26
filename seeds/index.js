@@ -2,6 +2,8 @@
 const PORT = process.env.PORT || 3000;
 const mongoose = require("mongoose");
 const cities = require("./cities");
+//imports place and descriptors
+const { places, descriptors } = require("./seedHelpers");
 const Campground = require("../models/campground");
 
 //connects mongodb and passes in options to prevent yelling
@@ -17,15 +19,21 @@ db.once("open", () => {
   console.log(`Database Connected!!!`);
 });
 
+const sample = (array) => array[Math.floor(Math.random() * array.length)];
+
 const seedDB = async () => {
   await Campground.deleteMany();
   for (let i = 0; i < 50; i++) {
     const random1000 = Math.floor(Math.random() * 1000);
     const camp = new Campground({
       location: `${cities[random1000].city}`,
+      title: `${sample(descriptors)} ${sample(places)}`,
     });
     await camp.save();
   }
 };
 
-seedDB();
+//closes db connection
+seedDB().then(() => {
+  mongoose.connection.close();
+});
