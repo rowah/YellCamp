@@ -26,16 +26,23 @@ app.get("/", (req, res) => {
   res.render(`home`);
 });
 
-//makes new campround through hardcoding
-app.get("/makenewcampground", async (req, res) => {
-  const camp = new Campground({
-    title: "Matangi",
-    price: 200,
-    description: "The Cheapest ever!",
-    location: "Ruiru, Nairobi",
-  });
-  await camp.save();
-  res.send(camp);
+// //makes new campround through hardcoding
+// app.get("/makenewcampground", async (req, res) => {
+//   const camp = new Campground({
+//     title: "Matangi",
+//     price: 200,
+//     description: "The Cheapest ever!",
+//     location: "Ruiru, Nairobi",
+//   });
+//   await camp.save();
+//   res.send(camp);
+// });
+
+//setting up different routes for campground
+app.get("/campgrounds", async (req, res) => {
+  const campgrounds = await Campground.find({});
+  //pass through to template
+  res.render("campgrounds/index", { campgrounds });
 });
 
 app.listen(PORT, () => {
