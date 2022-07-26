@@ -38,7 +38,7 @@ app.get("/", (req, res) => {
 //   res.send(camp);
 // });
 
-//setting up different routes for campground
+//setting up different routes for campgrounds
 app.get("/campgrounds", async (req, res) => {
   const campgrounds = await Campground.find({});
   //pass through to template
