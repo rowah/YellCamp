@@ -10,6 +10,12 @@
     <h1><%= campground.title%></h1>
     <h2><%= campground.location%></h2>
     <p><a href="/campgrounds/<%=campground._id%>/edit">Edit Campground</a></p>
+    <!-- delete request button in form (sends a post request to url: /campgrounds/:id) that fakes out express because methodOverride -->
+    <p>
+      <form action="/campground/<%=campground._id%>?_method=DELETE" method="POST">
+        <button>Delete</button>
+      </form>
+    </p>
     <footer>
       <a href="/campgrounds">All Campgrounds</a>
     </footer>
