@@ -22,6 +22,9 @@ const app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+//req.body in form submission is empty despite being sent back, the body is not parsed. Req has to be told to parse the body (bodyparser)
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", (req, res) => {
   res.render(`home`);
 });
@@ -44,6 +47,22 @@ app.get("/campgrounds", async (req, res) => {
   //pass through to template
   res.render("campgrounds/index", { campgrounds });
 });
+
+//creates route to add a new campground through a form action...serviing the form as a get request // form action is a POST
+app.get("/campgrounds/new", (req, res) => {
+  res.render("campgrounds/new");
+});
+
+//sets up the endpoint as a post where the form is submitted to
+app.post("/campgrounds", async (req, res) => {
+  //req.send(req.body);
+
+  //create new campround and redirect to the new campground
+  const campground = new Campground(req.body.campground);
+  await campground.save();
+  res.redirect(`/campgrounds/${campground._id}`);
+});
+//order matters
 
 app.get("/campgrounds/:id", async (req, res) => {
   const campground = await Campground.findById(req.params.id);
